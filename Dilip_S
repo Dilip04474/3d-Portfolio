@@ -1,0 +1,96 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Sparkles, Eye } from "lucide-react";
+import { useRef } from "react";
+
+export default function Portfolio() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.2]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white font-sans overflow-x-hidden">
+      <header className="flex justify-between items-center p-6 border-b border-gray-800 shadow-md sticky top-0 bg-black/70 backdrop-blur z-50">
+        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+          <Sparkles className="text-blue-500" /> My 3D World
+        </h1>
+        <Button variant="outline" className="text-white border-gray-600 hover:border-white">Contact</Button>
+      </header>
+
+      <motion.section
+        ref={heroRef}
+        className="text-center py-32 px-4 bg-gradient-to-b from-gray-900 to-black relative"
+        style={{ scale, opacity }}
+      >
+        <motion.h2
+          className="text-5xl md:text-6xl font-bold mb-6"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Explore My 3D Creations
+        </motion.h2>
+        <motion.p
+          className="text-gray-400 max-w-2xl mx-auto text-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          A showcase of stunning 3D art, animations, and designs that blend technology with creativity.
+        </motion.p>
+      </motion.section>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6 pb-20">
+        {[1, 2, 3, 4, 5, 6].map((item) => (
+          <motion.div
+            key={item}
+            className="rounded-2xl overflow-hidden shadow-xl bg-gray-900 relative group hover:shadow-blue-500/50 transition-shadow duration-300"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src={`/images/3d-art-${item}.jpg`}
+              alt={`3D Art ${item}`}
+              className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <CardContent className="p-4">
+              <h3 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                <Eye className="text-blue-400" /> 3D Piece {item}
+              </h3>
+              <p className="text-gray-400 text-sm">
+                A detailed description of the piece, its inspiration, and the tools used.
+              </p>
+            </CardContent>
+            <motion.div
+              className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex justify-center items-center text-white text-sm backdrop-blur-sm transition-opacity duration-500"
+            >
+              Click to learn more
+            </motion.div>
+          </motion.div>
+        ))}
+      </section>
+
+      <section className="px-6 pb-20 max-w-4xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl font-bold mb-4">Design Philosophy</h2>
+          <p className="text-gray-400 text-lg">
+            Inspired by clean, functional aesthetics. Every model, texture, and animation is crafted with attention to precision and emotion—like every Apple product.
+          </p>
+        </motion.div>
+      </section>
+
+      <footer className="text-center text-gray-500 text-sm pb-6">
+        © {new Date().getFullYear()} My 3D World. All rights reserved.
+      </footer>
+    </div>
+  );
+}
